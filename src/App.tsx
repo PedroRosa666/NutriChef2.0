@@ -24,24 +24,34 @@ function App() {
   const { message, type, hideToast } = useToastStore();
   const t = useTranslation();
 
-  const CATEGORIES = [
-    t.categories.all,
-    t.categories.vegan,
-    t.categories.lowCarb,
-    t.categories.highProtein,
-    t.categories.glutenFree,
-    t.categories.vegetarian,
-  ];
+  // Use as CHAVES originais das categorias
+  const CATEGORIES = ['all', 'vegan', 'lowCarb', 'highProtein', 'glutenFree', 'vegetarian'];
 
-  // Sincroniza a categoria inicial com o valor traduzido de "All"
+  // Sincroniza a categoria inicial com a chave "all"
   useEffect(() => {
-    setCategory(t.categories.all); // Configura a categoria inicial como "Todas" (ou "All" em inglês)
-  }, [t.categories.all]);
+    setCategory('all'); // Configura a categoria inicial como "all"
+  }, [setCategory]);
 
+  // Função para normalizar as chaves (remover espaços e converter para lowercase)
+  const normalizeKey = (key: string) => {
+    return key.toLowerCase().replace(/\s+/g, '');
+  };
+
+  // Filtra as receitas
   const filteredRecipes = recipes.filter(recipe => {
-    const matchesCategory = category === t.categories.all || recipe.category === category;
+    // Normalize as chaves para comparação
+    const normalizedRecipeCategory = normalizeKey(recipe.category);
+    const normalizedSelectedCategory = normalizeKey(category);
+
+    const matchesCategory = normalizedSelectedCategory === 'all' || normalizedRecipeCategory === normalizedSelectedCategory;
     const matchesSearch = recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       recipe.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    // Adicione logs para depuração
+    console.log('Categoria da receita:', recipe.category, 'Normalizada:', normalizedRecipeCategory);
+    console.log('Categoria selecionada:', category, 'Normalizada:', normalizedSelectedCategory);
+    console.log('Resultado do filtro:', matchesCategory);
+
     return matchesCategory && matchesSearch;
   });
 
@@ -77,6 +87,7 @@ function App() {
               )}
             </div>
 
+            {/* Passe as CHAVES originais para o CategoryFilter */}
             <CategoryFilter
               categories={CATEGORIES}
               selectedCategory={category}

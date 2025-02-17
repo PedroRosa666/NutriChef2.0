@@ -177,9 +177,6 @@ export const translations = {
       recipeDiff: "Dificuldade",
       recipeIngredients: "Passo a passo",
       recipeInstruction: "Preparo",
-
-
-
     },
     categories: {
       all: 'Todas',

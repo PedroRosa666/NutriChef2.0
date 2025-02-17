@@ -16,18 +16,30 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
   const { isAuthenticated } = useAuthStore();
   const t = useTranslation();
 
-  const easy = t.recipe.difficultyLevels.easy;
-  const medium = t.recipe.difficultyLevels.medium;
-  const hard = t.recipe.difficultyLevels.hard;
+  // Para dificuldade
+  const difficultyTranslations = t.recipe.difficultyLevels;
+  const translatedDifficulty = difficultyTranslations[recipe.difficulty as keyof typeof difficultyTranslations] || recipe.difficulty;
 
-  const translatedCategories: { [key: string]: string } = {
-    all: t.categories.all,
-    vegan: t.categories.vegan,
-    lowCarb: t.categories.lowCarb,
-    highProtein: t.categories.highProtein,
-    glutenFree: t.categories.glutenFree,
-    vegetarian: t.categories.vegetarian,
+  // Para categorias
+  // Dentro do componente RecipeCard, modifique a parte das categorias:
+  const categoryTranslations = t.categories;
+
+  const normalizeCategoryKey = (category: string) => {
+    return category
+      .toLowerCase()
+      .split(' ')
+      .map((word, index) =>
+        index === 0 ? word : word[0].toUpperCase() + word.slice(1)
+      )
+      .join('');
   };
+
+  const translatedCategory = categoryTranslations[
+    normalizeCategoryKey(recipe.category) as keyof typeof categoryTranslations
+  ] || recipe.category;
+
+  // Adicione para debug:
+  console.log('Chave normalizada:', normalizeCategoryKey(recipe.category));
 
   const isFavorite = favoriteRecipes.includes(recipe.id);
 
@@ -42,6 +54,12 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
     }
   };
 
+
+  // Dentro do componente, antes do return:
+  console.log('Categoria crua:', recipe.category);
+  console.log('Tradução encontrada:', translatedCategory);
+  console.log('Lista de categorias:', categoryTranslations);
+
   return (
     <div
       onClick={onClick}
@@ -54,7 +72,7 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
           className="w-full h-48 object-cover"
         />
         <span className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm">
-          {translatedCategories[recipe.category] || recipe.category}
+          {translatedCategory} {/* Alteração aqui */}
         </span>
         {isAuthenticated && (
           <button
@@ -85,12 +103,8 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
               recipe.difficulty === 'medium' && "text-yellow-500",
               recipe.difficulty === 'hard' && "text-red-500"
             )}>
-              {
-                recipe.difficulty === 'easy' ? easy :
-                recipe.difficulty === 'medium' ? medium :
-                recipe.difficulty === 'hard' ? hard :
-                recipe.difficulty
-              }</span>
+              {translatedDifficulty} {/* Alteração aqui */}
+            </span>
           </div>
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />

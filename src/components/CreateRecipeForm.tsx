@@ -6,6 +6,7 @@ import { useTranslation } from '../hooks/useTranslation'; // Importe o hook de t
 import { cn } from '../lib/utils';
 import type { Recipe } from '../types/recipe';
 
+type CategoryKey = keyof ReturnType<typeof useTranslation>['categories'];
 interface CreateRecipeFormProps {
   isOpen: boolean;
   onClose: () => void;
@@ -16,13 +17,14 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
   const { createRecipe } = useRecipesStore();
   const t = useTranslation(); // Use o hook de tradução
   const [loading, setLoading] = useState(false);
+  // Estado inicial corrigido
   const [recipe, setRecipe] = useState<Partial<Recipe>>({
     title: '',
     description: '',
     image: '',
     prepTime: 30,
     difficulty: 'medium',
-    category: 'All', // Categoria inicial em inglês
+    category: 'all', // Chave original corrigida
     ingredients: [''],
     instructions: [''],
     nutritionFacts: {
@@ -33,6 +35,8 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
       fiber: 0,
     },
   });
+
+
   const NewRecipe = t.recipe.CreateNewRecipe
   const easy = t.recipe.difficultyLevels.easy;
   const medium = t.recipe.difficultyLevels.medium;
@@ -49,7 +53,6 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
   const addIngredient = t.recipe.addIngredient;
   const addStep = t.recipe.addStep;
   const CreateRecipe = t.recipe.CreateRecipe;
-
 
   if (!isOpen || !user) return null;
 
@@ -96,10 +99,11 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
   };
 
   // Mapeia as categorias traduzidas para o formato { valor: 'original', label: 'traduzido' }
-  const translatedCategories = Object.entries(t.categories).map(([key, value]) => ({
-    value: key, // Valor original (em inglês)
-    label: value, // Valor traduzido
+  const translatedCategories = (Object.keys(t.categories) as CategoryKey[]).map((key) => ({
+    value: key,
+    label: t.categories[key],
   }));
+
 
   //Esse segundo className é o formulário de criação de receita
   return (
@@ -193,7 +197,10 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
               </label>
               <select
                 value={recipe.category}
-                onChange={(e) => setRecipe((prev) => ({ ...prev, category: e.target.value }))}
+                onChange={(e) => setRecipe((prev) => ({
+                  ...prev,
+                  category: e.target.value as CategoryKey
+                }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
               >
