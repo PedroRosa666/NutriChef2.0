@@ -18,16 +18,16 @@ export function NutritionGoalsForm() {
   };
 
 
-  // Tá dando aquele erro ali, mas tá funcionando normal
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h3 className="text-lg font-semibold mb-4">{dailyGoals}</h3>
-      
+
       {Object.entries(formData).map(([key, value]) => (
         <div key={key}>
-          <label className="block text-sm font-medium text-gray-300 mb-1 capitalize" >
-            {goalLabels[key]} {key === 'calories' ? '(kcal)' : '(g)'}
+          <label className="block text-sm font-medium text-gray-300 mb-1 capitalize">
+            {goalLabels[key as keyof typeof goalLabels]} {key === 'calories' ? '(kcal)' : '(g)'}
           </label>
+
           <input
             type="number"
             value={value}

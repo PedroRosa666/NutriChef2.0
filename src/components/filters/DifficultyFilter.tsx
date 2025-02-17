@@ -1,4 +1,3 @@
-import React from 'react';
 import { useFiltersStore } from '../../store/filters';
 import { cn } from '../../lib/utils';
 

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import { useSettingsStore } from '../../store/settings';
 import { useTranslation } from '../../hooks/useTranslation';
 
@@ -10,7 +9,6 @@ export function ThemeSwitch() {
   const themes = [
     { id: 'light', icon: Sun, label: t.common.theme.light },
     { id: 'dark', icon: Moon, label: t.common.theme.dark },
-    { id: 'system', icon: Monitor, label: t.common.theme.system },
   ] as const;
 
   return (

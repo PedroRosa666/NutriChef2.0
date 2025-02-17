@@ -1,5 +1,4 @@
-import React from 'react';
-import { Clock, X } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { useSearchHistoryStore } from '../../store/search-history';
 import { useFiltersStore } from '../../store/filters';
 

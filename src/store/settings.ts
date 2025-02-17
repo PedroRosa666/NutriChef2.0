@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Language } from '../lib/i18n/translations';
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = 'light' | 'dark';
 
 interface SettingsState {
   theme: Theme;
@@ -14,7 +14,7 @@ interface SettingsState {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      theme: 'system',
+      theme: 'light',
       language: 'pt',
       setTheme: (theme) => set({ theme }),
       setLanguage: (language) => set({ language }),

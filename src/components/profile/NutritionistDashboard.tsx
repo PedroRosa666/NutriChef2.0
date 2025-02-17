@@ -1,4 +1,3 @@
-import React from 'react';
 import { Award, Users, BookOpen, TrendingUp } from 'lucide-react';
 import { useAuthStore } from '../../store/auth';
 import { useRecipesStore } from '../../store/recipes';

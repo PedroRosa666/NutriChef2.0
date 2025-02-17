@@ -1,4 +1,3 @@
-import React from 'react';
 import { Globe } from 'lucide-react';
 import { useSettingsStore } from '../../store/settings';
 import type { Language } from '../../lib/i18n/translations';

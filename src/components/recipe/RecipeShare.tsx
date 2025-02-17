@@ -1,5 +1,4 @@
-import React from 'react';
-import { Share2, Facebook, Twitter, Link } from 'lucide-react';
+import { Share2, Facebook, Twitter,  Link } from 'lucide-react';
 import { useToastStore } from '../../store/toast';
 
 interface RecipeShareProps {
@@ -46,15 +45,6 @@ export function RecipeShare({ recipeId, title }: RecipeShareProps) {
           className="p-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600"
         >
           <Twitter className="w-5 h-5" />
-        </a>
-        
-        <a
-          href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-        >
-          <WhatsApp className="w-5 h-5" />
         </a>
         
         <button

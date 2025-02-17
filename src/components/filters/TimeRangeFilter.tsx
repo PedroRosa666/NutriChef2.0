@@ -1,4 +1,3 @@
-import React from 'react';
 import { useFiltersStore } from '../../store/filters';
 import { Clock } from 'lucide-react';
 

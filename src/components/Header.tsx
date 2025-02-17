@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Search, Menu, LogOut, User } from 'lucide-react';
 import { useAuthStore } from '../store/auth';
 import { useFiltersStore } from '../store/filters';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { ProfileCard } from './ProfileCard';
 import { ProfileTabs } from './ProfileTabs';
