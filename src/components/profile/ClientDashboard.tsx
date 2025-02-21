@@ -14,14 +14,14 @@ export function ClientDashboard() {
 
   const profile = user.profile || {};
   const favoriteRecipesList = recipes.filter(recipe => favoriteRecipes.includes(recipe.id));
-  
+
   // Calculate statistics
   const totalFavorites = favoriteRecipesList.length;
-  const averageCalories = favoriteRecipesList.reduce((acc, recipe) => 
+  const averageCalories = favoriteRecipesList.reduce((acc, recipe) =>
     acc + recipe.nutritionFacts.calories, 0) / (totalFavorites || 1);
-  const averagePrepTime = favoriteRecipesList.reduce((acc, recipe) => 
+  const averagePrepTime = favoriteRecipesList.reduce((acc, recipe) =>
     acc + recipe.prepTime, 0) / (totalFavorites || 1);
-  
+
   return (
     <div className="space-y-6">
       <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
@@ -37,7 +37,7 @@ export function ClientDashboard() {
           </div>
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
             <label className="text-sm text-gray-500 dark:text-gray-400">{t.profile.accountType}</label>
-            <p className="font-medium capitalize text-gray-900 dark:text-white">{user.type}</p>
+            <p className="font-medium capitalize text-gray-900 dark:text-white">{t.profile.client}</p>
           </div>
         </div>
       </div>
@@ -66,6 +66,7 @@ export function ClientDashboard() {
           </div>
           <p className="text-3xl font-bold text-green-600 dark:text-green-400">{averagePrepTime.toFixed(0)}min</p>
         </div>
+
 
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
           <div className="flex items-center gap-3 mb-2">

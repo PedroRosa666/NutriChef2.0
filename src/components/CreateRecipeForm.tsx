@@ -15,8 +15,9 @@ interface CreateRecipeFormProps {
 export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
   const { user } = useAuthStore();
   const { createRecipe } = useRecipesStore();
-  const t = useTranslation(); // Use o hook de tradução
+  const translations = useTranslation(); // Use o hook de tradução
   const [loading, setLoading] = useState(false);
+
   // Estado inicial corrigido
   const [recipe, setRecipe] = useState<Partial<Recipe>>({
     title: '',
@@ -36,23 +37,27 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
     },
   });
 
+  // Log para depuração
+  console.log('Current translations:', translations);
+  console.log('Current recipe state:', recipe);
 
-  const NewRecipe = t.recipe.CreateNewRecipe
-  const easy = t.recipe.difficultyLevels.easy;
-  const medium = t.recipe.difficultyLevels.medium;
-  const hard = t.recipe.difficultyLevels.hard;
-  const title = t.recipe.recipeTitle;
-  const description = t.recipe.recipeDescription;
-  const imageURL = t.recipe.recipeImageURL;
-  const prepTime = t.recipe.prepTime;
-  const difficulty = t.recipe.difficulty;
-  const category = t.recipe.recipeCategory;
-  const ingredients = t.recipe.ingredients;
-  const instructions = t.recipe.instructions;
-  const nutritionFacts = t.recipe.nutritionFacts;
-  const addIngredient = t.recipe.addIngredient;
-  const addStep = t.recipe.addStep;
-  const CreateRecipe = t.recipe.CreateRecipe;
+  // Traduções
+  const NewRecipe = translations.recipe.CreateNewRecipe;
+  const easy = translations.recipe.difficultyLevels.easy;
+  const medium = translations.recipe.difficultyLevels.medium;
+  const hard = translations.recipe.difficultyLevels.hard;
+  const title = translations.recipe.recipeTitle;
+  const description = translations.recipe.recipeDescription;
+  const imageURL = translations.recipe.recipeImageURL;
+  const prepTime = translations.recipe.prepTime;
+  const difficulty = translations.recipe.difficulty;
+  const category = translations.recipe.recipeCategory;
+  const ingredients = translations.recipe.ingredients;
+  const instructions = translations.recipe.instructions;
+  const nutritionFacts = translations.recipe.nutritionFacts;
+  const addIngredient = translations.recipe.addIngredient;
+  const addStep = translations.recipe.addStep;
+  const CreateRecipe = translations.recipe.CreateRecipe;
 
   if (!isOpen || !user) return null;
 
@@ -99,13 +104,11 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
   };
 
   // Mapeia as categorias traduzidas para o formato { valor: 'original', label: 'traduzido' }
-  const translatedCategories = (Object.keys(t.categories) as CategoryKey[]).map((key) => ({
+  const translatedCategories = (Object.keys(translations.categories) as CategoryKey[]).map((key) => ({
     value: key,
-    label: t.categories[key],
+    label: translations.categories[key],
   }));
 
-
-  //Esse segundo className é o formulário de criação de receita
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white dark:bg-gray-900 text-black dark:text-gray-400 rounded-xl max-w-3xl w-full p-6 relative max-h-[90vh] overflow-y-auto">
@@ -224,7 +227,7 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
                   value={ingredient}
                   onChange={(e) => handleArrayInput('ingredients', index, e.target.value)}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                  placeholder="e.g., 2 cups flour"
+                  placeholder={`${translations.recipe.example}`}
                   required
                 />
                 <button
@@ -256,7 +259,7 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
                   value={instruction}
                   onChange={(e) => handleArrayInput('instructions', index, e.target.value)}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                  placeholder={`Step ${index + 1}`}
+                  placeholder={`${translations.recipe.Step} ${index + 1}`} // Tradução aplicada aqui
                   required
                 />
                 <button
@@ -278,35 +281,47 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
           </div>
 
           <div>
-            <h3 className="text-sm font-medium text-gray-700 mb-2 dark:text-white">{nutritionFacts}</h3>
+            <h3 className="text-sm font-medium text-gray-700 mb-2 dark:text-white">
+              {nutritionFacts}
+            </h3>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              {Object.entries(recipe.nutritionFacts || {}).map(([key, value]) => (
-                <div key={key}>
-                  <label className="block text-sm text-gray-600 mb-1 capitalize dark:text-white">
-                    {key}
-                  </label>
-                  <input
-                    type="number"
-                    value={value}
-                    onChange={(e) =>
-                      setRecipe((prev) => ({
-                        ...prev,
-                        nutritionFacts: {
-                          calories: prev.nutritionFacts?.calories ?? 0,
-                          protein: prev.nutritionFacts?.protein ?? 0,
-                          carbs: prev.nutritionFacts?.carbs ?? 0,
-                          fat: prev.nutritionFacts?.fat ?? 0,
-                          fiber: prev.nutritionFacts?.fiber ?? 0,
-                          [key]: Number(e.target.value) || 0,
-                        },
-                      }))
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                    min="0"
-                    required
-                  />
-                </div>
-              ))}
+              {Object.entries(recipe.nutritionFacts || {}).map(([key, value]) => {
+                // Garantir que `key` seja uma das chaves válidas de `nutritionGoalsnames`
+                const nutritionKey = key as keyof typeof translations.profile.nutritionGoalsnames;
+
+                return (
+                  <div key={key}>
+                    <label className="block text-sm text-gray-600 mb-1 capitalize dark:text-white">
+                      {translations.profile.nutritionGoalsnames[nutritionKey]} {/* Acesso seguro */}
+                    </label>
+                    <input
+                      type="number"
+                      value={value}
+                      onChange={(e) =>
+                        setRecipe((prev) => {
+                          // Garantir que `nutritionFacts` sempre tenha valores padrão
+                          const updatedNutritionFacts = {
+                            calories: prev.nutritionFacts?.calories || 0,
+                            protein: prev.nutritionFacts?.protein || 0,
+                            carbs: prev.nutritionFacts?.carbs || 0,
+                            fat: prev.nutritionFacts?.fat || 0,
+                            fiber: prev.nutritionFacts?.fiber || 0,
+                            [key]: Number(e.target.value) || 0, // Atualizar o valor do campo atual
+                          };
+
+                          return {
+                            ...prev,
+                            nutritionFacts: updatedNutritionFacts, // Garantir que `nutritionFacts` não seja undefined
+                          };
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                      min="0"
+                      required
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
 

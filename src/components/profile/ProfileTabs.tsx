@@ -15,11 +15,10 @@ function Tab({ active, onClick, children }: TabProps) {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 font-medium rounded-lg transition-colors ${
-        active
+      className={`px-4 py-2 font-medium rounded-lg transition-colors ${active
           ? 'bg-green-100 text-green-700'
           : 'text-gray-600 hover:bg-gray-100'
-      }`}
+        }`}
     >
       {children}
     </button>
@@ -69,11 +68,11 @@ export function ProfileTabs() {
         {activeTab === 'recipes' && user?.type === 'nutritionist' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {userRecipes.map(recipe => (
-              <RecipeCard key={recipe.id} recipe={recipe} onClick={() => {}} />
+              <RecipeCard key={recipe.id} recipe={recipe} onClick={() => { }} />
             ))}
             {userRecipes.length === 0 && (
               <p className="text-gray-500 col-span-full text-center py-8">
-                You haven't published any recipes yet.
+                {t.profile.noRecipesYet}
               </p>
             )}
           </div>
@@ -82,11 +81,11 @@ export function ProfileTabs() {
         {activeTab === 'favorites' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {userFavorites.map(recipe => (
-              <RecipeCard key={recipe.id} recipe={recipe} onClick={() => {}} />
+              <RecipeCard key={recipe.id} recipe={recipe} onClick={() => { }} />
             ))}
             {userFavorites.length === 0 && (
               <p className="text-gray-500 col-span-full text-center py-8">
-                You haven't saved any recipes as favorites yet.
+                {t.profile.noFavorites}
               </p>
             )}
           </div>

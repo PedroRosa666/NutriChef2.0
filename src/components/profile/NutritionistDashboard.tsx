@@ -30,7 +30,7 @@ export function NutritionistDashboard() {
           </div>
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
             <label className="text-sm text-gray-500 dark:text-gray-400">{t.profile.accountType}</label>
-            <p className="font-medium capitalize text-gray-900 dark:text-white">{user.type}</p>
+            <p className="font-medium capitalize text-gray-900 dark:text-white">{t.profile.nutricionist}</p>
           </div>
         </div>
       </div>

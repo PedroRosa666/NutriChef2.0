@@ -69,7 +69,7 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
       )}
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1 dark:text">
           Name
         </label>
         <input
@@ -83,7 +83,7 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-white">
           Email
         </label>
         <input
@@ -97,7 +97,7 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-white">
           Password
         </label>
         <input
@@ -114,7 +114,7 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
       {mode === 'signup' && (
         <>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-white">
               Account Type
             </label>
             <div className="grid grid-cols-2 gap-4">
@@ -181,165 +181,13 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Allergies
-                </label>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {profile.allergies.map((allergy) => (
-                    <span
-                      key={allergy}
-                      className="px-2 py-1 bg-red-100 text-red-700 rounded-full text-sm flex items-center gap-1"
-                    >
-                      {allergy}
-                      <button
-                        type="button"
-                        onClick={() => removeArrayItem('allergies', allergy)}
-                        className="hover:text-red-500"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-                <input
-                  type="text"
-                  placeholder="Add allergy"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleArrayInput('allergies', e.currentTarget.value);
-                      e.currentTarget.value = '';
-                    }
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Health Goals
-                </label>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {profile.healthGoals.map((goal) => (
-                    <span
-                      key={goal}
-                      className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-sm flex items-center gap-1"
-                    >
-                      {goal}
-                      <button
-                        type="button"
-                        onClick={() => removeArrayItem('healthGoals', goal)}
-                        className="hover:text-red-500"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-                <input
-                  type="text"
-                  placeholder="Add health goal"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleArrayInput('healthGoals', e.currentTarget.value);
-                      e.currentTarget.value = '';
-                    }
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              </div>
             </>
           ) : (
             <>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Specializations
-                </label>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {profile.specializations.map((spec) => (
-                    <span
-                      key={spec}
-                      className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-sm flex items-center gap-1"
-                    >
-                      {spec}
-                      <button
-                        type="button"
-                        onClick={() => removeArrayItem('specializations', spec)}
-                        className="hover:text-red-500"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-                <input
-                  type="text"
-                  placeholder="Add specialization"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleArrayInput('specializations', e.currentTarget.value);
-                      e.currentTarget.value = '';
-                    }
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Certifications
-                </label>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {profile.certifications.map((cert) => (
-                    <span
-                      key={cert}
-                      className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-sm flex items-center gap-1"
-                    >
-                      {cert}
-                      <button
-                        type="button"
-                        onClick={() => removeArrayItem('certifications', cert)}
-                        className="hover:text-red-500"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-                <input
-                  type="text"
-                  placeholder="Add certification"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleArrayInput('certifications', e.currentTarget.value);
-                      e.currentTarget.value = '';
-                    }
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Years of Experience
-                </label>
-                <input
-                  type="text"
-                  value={profile.experience}
-                  onChange={(e) => setProfile(prev => ({ ...prev, experience: e.target.value }))}
-                  placeholder="e.g., 5+ years"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              </div>
             </>
           )}
         </>
-      )}
+      )};
 
       <button
         type="submit"

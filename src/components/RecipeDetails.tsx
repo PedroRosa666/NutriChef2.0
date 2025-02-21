@@ -5,6 +5,7 @@ import { useRecipesStore } from '../store/recipes';
 import { EditRecipeForm } from './recipe/EditRecipeForm';
 import type { Recipe } from '../types/recipe';
 import { cn } from '../lib/utils';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface RecipeDetailsProps {
   recipe: Recipe;
@@ -16,7 +17,11 @@ export function RecipeDetails({ recipe, onClose }: RecipeDetailsProps) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { user, isAuthenticated } = useAuthStore();
   const { favoriteRecipes, addToFavorites, removeFromFavorites, addReview, deleteRecipe } = useRecipesStore();
-  
+  const t = useTranslation();
+
+  const difficultyTranslations = t.recipe.difficultyLevels;
+  const translatedDifficulty = difficultyTranslations[recipe.difficulty as keyof typeof difficultyTranslations] || recipe.difficulty;
+
   const isFavorite = favoriteRecipes.includes(recipe.id);
   const isAuthor = user?.id === recipe.authorId;
 
@@ -106,7 +111,7 @@ export function RecipeDetails({ recipe, onClose }: RecipeDetailsProps) {
                       recipe.difficulty === 'easy' && "text-green-500",
                       recipe.difficulty === 'medium' && "text-yellow-500",
                       recipe.difficulty === 'hard' && "text-red-500"
-                    )}>{recipe.difficulty}</span>
+                    )}>{translatedDifficulty} {/* Alteração aqui */}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
@@ -116,14 +121,15 @@ export function RecipeDetails({ recipe, onClose }: RecipeDetailsProps) {
 
                 <p className="text-gray-600 mb-4 dark:text-white">{recipe.description}</p>
 
+                {/* Seção de fatos nutricionais */}
                 <div className="bg-green-50 p-4 rounded-lg mb-4">
-                  <h3 className="font-semibold mb-2 dark:text-black">Nutrition Facts (per serving)</h3>
+                  <h3 className="font-semibold mb-2 dark:text-black">{t.recipe.nutritionFacts}</h3>
                   <div className="grid grid-cols-2 gap-2 text-sm dark:text-black">
-                    <div>Calories: {recipe.nutritionFacts.calories}</div>
-                    <div>Protein: {recipe.nutritionFacts.protein}g</div>
-                    <div>Carbs: {recipe.nutritionFacts.carbs}g</div>
-                    <div>Fat: {recipe.nutritionFacts.fat}g</div>
-                    <div>Fiber: {recipe.nutritionFacts.fiber}g</div>
+                    <div>{t.profile.nutritionGoalsnames.calories}: {recipe.nutritionFacts.calories}</div>
+                    <div>{t.profile.nutritionGoalsnames.protein}: {recipe.nutritionFacts.protein}g</div>
+                    <div>{t.profile.nutritionGoalsnames.carbs}: {recipe.nutritionFacts.carbs}g</div>
+                    <div>{t.profile.nutritionGoalsnames.fat}: {recipe.nutritionFacts.fat}g</div>
+                    <div>{t.profile.nutritionGoalsnames.fiber}: {recipe.nutritionFacts.fiber}g</div>
                   </div>
                 </div>
               </div>
@@ -131,7 +137,7 @@ export function RecipeDetails({ recipe, onClose }: RecipeDetailsProps) {
 
             <div className="grid md:grid-cols-2 gap-6 mt-6">
               <div>
-                <h3 className="font-semibold mb-2">Ingredients</h3>
+                <h3 className="font-semibold mb-2">{t.recipe.ingredients}</h3>
                 <ul className="list-disc list-inside space-y-1">
                   {recipe.ingredients.map((ingredient, index) => (
                     <li key={index} className="text-gray-600 dark:text-white">{ingredient}</li>
@@ -140,7 +146,7 @@ export function RecipeDetails({ recipe, onClose }: RecipeDetailsProps) {
               </div>
 
               <div>
-                <h3 className="font-semibold mb-2">Instructions</h3>
+                <h3 className="font-semibold mb-2">{t.recipe.instructions}</h3>
                 <ol className="list-decimal list-inside space-y-2">
                   {recipe.instructions.map((instruction, index) => (
                     <li key={index} className="text-gray-600 dark:text-white">{instruction}</li>
@@ -150,11 +156,11 @@ export function RecipeDetails({ recipe, onClose }: RecipeDetailsProps) {
             </div>
 
             <div className="mt-8">
-              <h3 className="font-semibold mb-4">Reviews</h3>
+              <h3 className="font-semibold mb-4">{t.recipe.reviews}</h3>
               {isAuthenticated ? (
                 <form onSubmit={handleAddReview} className="mb-6">
                   <div className="flex items-center gap-2 mb-2">
-                    <span>Rating:</span>
+                    <span>{t.recipe.rating}:</span>
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         key={star}
@@ -172,7 +178,7 @@ export function RecipeDetails({ recipe, onClose }: RecipeDetailsProps) {
                   <textarea
                     value={newReview.comment}
                     onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
-                    placeholder="Write your review..."
+                    placeholder={t.recipe.writeReview}
                     className="w-full p-2 border rounded-lg mb-2"
                     rows={3}
                     required
@@ -181,11 +187,11 @@ export function RecipeDetails({ recipe, onClose }: RecipeDetailsProps) {
                     type="submit"
                     className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
                   >
-                    Submit Review
+                    {t.recipe.submitReview}
                   </button>
                 </form>
               ) : (
-                <p className="text-gray-500 mb-4">Please sign in to leave a review.</p>
+                <p className="text-gray-500 mb-4">{t.recipe.signInToReview}</p>
               )}
 
               <div className="space-y-4">
