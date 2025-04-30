@@ -1,4 +1,4 @@
-export type UserType = 'nutritionist' | 'client';
+export type UserType = 'Nutritionist' | 'Client';
 
 export interface UserProfile {
   avatar_url?: string;

@@ -38,9 +38,6 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
     normalizeCategoryKey(recipe.category) as keyof typeof categoryTranslations
   ] || recipe.category;
 
-  // Adicione para debug:
-  console.log('Chave normalizada:', normalizeCategoryKey(recipe.category));
-
   const isFavorite = favoriteRecipes.includes(recipe.id);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
@@ -55,10 +52,6 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
   };
 
 
-  // Dentro do componente, antes do return:
-  console.log('Categoria crua:', recipe.category);
-  console.log('Tradução encontrada:', translatedCategory);
-  console.log('Lista de categorias:', categoryTranslations);
 
   return (
     <div

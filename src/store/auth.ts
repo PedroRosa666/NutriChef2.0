@@ -27,7 +27,7 @@ export const useAuthStore = create<AuthState>()(
       signIn: async (email: string, password: string, name: string) => {
         set({ loading: true, error: null });
         try {
-          const { user, token } = await authService.signIn(email, password, name);
+          const { user, token } = await authService.signIn(email, password);
           set({ user, token, isAuthenticated: true });
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Sign in failed' });
@@ -50,7 +50,7 @@ export const useAuthStore = create<AuthState>()(
         set({ user: null, token: null, isAuthenticated: false });
       },
       clearError: () => set({ error: null }),
-      isNutritionist: () => get().user?.type === 'nutritionist'
+      isNutritionist: () => get().user?.type === 'Nutritionist'
     }),
     {
       name: 'auth-storage',

@@ -1,63 +1,47 @@
-import supabase from '../supabaseClient'; // Certifique-se de importar o cliente do Supabase
+import { auth, db } from '../firebaseClient';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 interface UserCredentials {
-    fullName: string;
-    accountType: 'Nutricionist' | 'Client'; // Definindo os tipos de conta possíveis
-    email: string;
-    password: string;
+  fullName: string;
+  accountType: 'Nutritionist' | 'Client';
+  email: string;
+  password: string;
 }
 
-export async function registerUser({ fullName, accountType, email, password }: UserCredentials) {
-    try {
-        // Criar usuário na tabela de autenticação
-        const { user, error } = await supabase.auth.signUp({
-            email,
-            password,
-        });
+export async function registerUser({ fullName, accountType, email, password }: UserCredentials): Promise<void> {
+  console.log('registerUser called with:', { fullName, accountType, email });
 
-        if (error) {
-            throw new Error(error.message);
-        }
+  try {
+    const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-        // Inserir dados adicionais no banco de dados (como nome completo e tipo de conta)
-        const { data, error: insertError } = await supabase
-            .from('users') // A tabela de usuários
-            .insert([
-                {
-                    id: user?.id, // A chave primária do usuário criada pelo Supabase
-                    name: fullName, // O nome completo
-                    TypeAccount: accountType, // O tipo de conta (Nutricionist ou Client)
-                    email,
-                },
-            ]);
+    const userData = {
+      name: fullName,
+      accountType,
+      email,
+    };
 
-        if (insertError) {
-            throw new Error(insertError.message);
-        }
+    console.log('Saving user data to Firestore:', userData);
+    await setDoc(doc(db, 'users', user.uid), userData);
 
-        console.log('Usuário cadastrado com sucesso!');
-        return data;
-    } catch (error) {
-        console.error('Erro no cadastro:', error);
-        throw error;
-    }
+    console.log('User registered successfully!');
+  } catch (error: any) {
+    console.error('Error in registerUser:', error.code, error.message);
+    throw error;
+  }
 }
 
-export async function loginUser(email: string, password: string) {
-    try {
-        const { user, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+export async function loginUser(email: string, password: string): Promise<void> {
+  console.log('loginUser called with:', { email });
 
-        if (error) {
-            throw new Error(error.message);
-        }
+  try {
+    const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-        console.log('Usuário logado com sucesso!');
-        return user;
-    } catch (error) {
-        console.error('Erro no login:', error);
-        throw error;
-    }
+    console.log('User logged in successfully:', user.uid);
+  } catch (error: any) {
+    console.error('Error in loginUser:', error.code, error.message);
+    throw error;
+  }
 }

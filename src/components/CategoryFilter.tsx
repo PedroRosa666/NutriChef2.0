@@ -23,8 +23,6 @@ export function CategoryFilter({
         // Obtenha a tradução da categoria
         const translatedCategory = categoryTranslations[categoryKey as keyof typeof categoryTranslations] || categoryKey;
 
-        console.log('Chave:', categoryKey, 'Tradução:', translatedCategory);
-
         return (
           <button
             key={categoryKey}

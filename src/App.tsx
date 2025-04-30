@@ -47,11 +47,6 @@ function App() {
     const matchesSearch = recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       recipe.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-    // Adicione logs para depuração
-    console.log('Categoria da receita:', recipe.category, 'Normalizada:', normalizedRecipeCategory);
-    console.log('Categoria selecionada:', category, 'Normalizada:', normalizedSelectedCategory);
-    console.log('Resultado do filtro:', matchesCategory);
-
     return matchesCategory && matchesSearch;
   });
 

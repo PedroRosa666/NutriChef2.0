@@ -37,10 +37,6 @@ export function CreateRecipeForm({ isOpen, onClose }: CreateRecipeFormProps) {
     },
   });
 
-  // Log para depuração
-  console.log('Current translations:', translations);
-  console.log('Current recipe state:', recipe);
-
   // Traduções
   const NewRecipe = translations.recipe.CreateNewRecipe;
   const easy = translations.recipe.difficultyLevels.easy;
